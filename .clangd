@@ -1,0 +1,21 @@
+CompileFlags:
+  Compiler: gcc
+  Add: [-std=c23, -Wall, -Wextra, -Wpedantic, -Werror]
+
+Diagnostics:
+  ClangTidy:
+    Add: [modernize*, performance*, readability*, portability*]
+    Remove:
+      [
+        cppcoreguidelines-*,
+        hicpp-*,
+        modernize-*,
+        llvm-header-guard,
+        llvm-include-order,
+      ]
+  UnusedIncludes: Strict
+
+InlayHints:
+  Enabled: Yes
+  ParameterNames: Yes
+  TypeHints: Yes
