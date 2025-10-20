@@ -1,19 +1,9 @@
 CompileFlags:
-  Compiler: gcc
-  Add: [-std=c23, -Wall, -Wextra, -Wpedantic, -Werror]
+  CompilationDatabase: "cmake"
 
 Diagnostics:
   ClangTidy:
     Add: [modernize*, performance*, readability*, portability*]
-    Remove:
-      [
-        cppcoreguidelines-*,
-        hicpp-*,
-        modernize-*,
-        llvm-header-guard,
-        llvm-include-order,
-      ]
-  UnusedIncludes: Strict
 
 InlayHints:
   Enabled: Yes

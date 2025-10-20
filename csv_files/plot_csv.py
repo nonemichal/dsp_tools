@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from common import get_file_path
+
+
+def plot_signal(s: np.ndarray):
+    plt.plot(s)
+    plt.show()
+
+
+if __name__ == "__main__":
+    # Get file path
+    file_path = get_file_path()
+
+    # Load csv file
+    s = np.loadtxt(file_path)
+
+    # Plot signals
+    plot_signal(s)

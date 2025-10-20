@@ -4,7 +4,7 @@ UseTab: Never
 BreakBeforeBraces: Attach
 
 SortIncludes: true
-IncludeBlocks: Preserve
+IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^<.*\.h>'
     Priority: 1

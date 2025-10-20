@@ -1,16 +1,8 @@
 import numpy as np
-from pathlib import Path
-
-
-def plot_signal(x: np.ndarray, s: np.ndarray):
-    import matplotlib.pyplot as plt
-
-    plt.plot(x, s)
-    plt.show()
-
+from .common import get_file_path
 
 if __name__ == "__main__":
-    # Linspace
+    # Generate linspace
     start = 0.0
     end = 1.0
     n = 1000
@@ -34,12 +26,9 @@ if __name__ == "__main__":
     # Mixed signal
     s = s1 + s2 + s3
 
-    # Plot signals
-    plot_signal(x, s)
+    # Get file path
+    file_path = get_file_path()
 
     # Save to csv file
-    base_dir = Path(__file__).parent.resolve()
-    file_name = "signal.csv"
-    file_path = base_dir / file_name
     np.savetxt(file_path, s, fmt="%2.10f")
     print(f"Signal saved as {file_path}")
