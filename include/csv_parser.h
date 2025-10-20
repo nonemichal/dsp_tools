@@ -1,6 +1,8 @@
-#ifndef _CSV_PARSER_H_
-#define _CSV_PARSER_H_
+#ifndef CSV_PARSER_H_
+#define CSV_PARSER_H_
 
-int get_val(int val);
+#define MAX_FILE_SIZE 10000 // max file size in bytes
 
-#endif // _CSV_PARSER_H_
+int *load_csv(const char *path, const char d);
+
+#endif // CSV_PARSER_H_
