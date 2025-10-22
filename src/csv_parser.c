@@ -1,10 +1,45 @@
 #include "csv_parser.h"
 
+#include <libgen.h>
+#include <linux/limits.h>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-/* Create Vector_csv from csv file */
+/* Return the absolute path to signal.csv */
+char *get_full_csv_path(void) {
+    // make a copy of __FILE__ because dirname may modify argument
+    char file_path[PATH_MAX];
+    strncpy(file_path, __FILE__, PATH_MAX - 1);
+    file_path[PATH_MAX - 1] = '\0';
+
+    // get the directory of the source file
+    const char *src_dir = dirname(file_path);
+
+    // calculate required buffer size
+    size_t len =
+        strlen(src_dir) + 1 + strlen(CSV_PATH_TEMPLATE) + 1; // '/' + CSV + '\0'
+    if (len > PATH_MAX) {
+        printf("Full path would exceed PATH_MAX.\nReturning NULL\n");
+        return NULL;
+    }
+
+    // allocate buffer
+    char *full_path = malloc(len);
+    if (!full_path) {
+        printf("Path buffer allocation failed.\nReturning NULL\n");
+        return NULL;
+    }
+
+    // build full path
+    snprintf(full_path, len, "%s/%s", src_dir, CSV_PATH_TEMPLATE);
+
+    return full_path;
+}
+
+/* Create Vector_csv from a csv file */
 Vector_csv vector_from_file(const char *path, const char delimiter) {
     // open CSV file
     FILE *fptr;
@@ -15,13 +50,21 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
 
     // if file not found
     if (fptr == NULL) {
-        printf("Not able to open the file.\nReturning an empty vector");
+        printf("Not able to open the file: %s.\nReturning an empty vector\n",
+               path);
         return vector_csv;
     }
 
     // allocate float buffer
     float *val_buffer = malloc(VAL_BUFFER_SIZE * sizeof(float));
     size_t val_counter = 0;
+
+    // if allocation failed
+    if (val_buffer == NULL) {
+        printf("Value buffer allocation failed.\nReturning an empty vector\n");
+        fclose(fptr);
+        return vector_csv;
+    }
 
     // read values from a csv file
     char chars_to_float[CHARS_TO_FLOAT_SIZE] = {0};
@@ -31,7 +74,7 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
         // check value counter
         if (val_counter >= VAL_BUFFER_SIZE) {
             printf("Size of value buffer cannot be geater than: "
-                   "%zu.\nReturning an empty vector",
+                   "%zu.\nReturning an empty vector\n",
                    VAL_BUFFER_SIZE);
             fclose(fptr);
             free(val_buffer);
@@ -49,7 +92,7 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
             // check char counter
             if (char_counter >= CHARS_TO_FLOAT_SIZE) {
                 printf("Size of char buffer cannot be geater than: "
-                       "%u.\nReturning an empty vector",
+                       "%u.\nReturning an empty vector\n",
                        CHARS_TO_FLOAT_SIZE);
                 fclose(fptr);
                 free(val_buffer);

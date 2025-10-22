@@ -2,7 +2,7 @@
 
 int main(void) {
     // variables to load a csv file
-    static const char *csv_path = DEFAULT_CSV_PATH;
+    const char *csv_path = get_full_csv_path();
     static const char delimiter = '\n';
 
     Vector_csv vector_csv = vector_from_file(csv_path, delimiter);
