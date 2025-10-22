@@ -4,6 +4,7 @@ from common import get_file_path
 
 
 def plot_signal(s: np.ndarray):
+    """Plot signal"""
     plt.plot(s)
     plt.show()
 
@@ -15,5 +16,5 @@ if __name__ == "__main__":
     # Load csv file
     s = np.loadtxt(file_path)
 
-    # Plot signals
+    # Plot signal
     plot_signal(s)

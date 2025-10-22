@@ -1,5 +1,5 @@
 import numpy as np
-from .common import get_file_path
+from common import get_file_path
 
 if __name__ == "__main__":
     # Generate linspace
