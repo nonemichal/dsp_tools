@@ -1,6 +1,7 @@
 #include "csv_parser.h"
 
 #include <libgen.h>
+#include <limits.h>
 #include <linux/limits.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -10,7 +11,7 @@
 
 /* Return the absolute path to signal.csv */
 char *get_full_csv_path(void) {
-    // make a copy of __FILE__ because dirname may modify argument
+    // make a copy of __FILE__
     char file_path[PATH_MAX];
     strncpy(file_path, __FILE__, PATH_MAX - 1);
     file_path[PATH_MAX - 1] = '\0';
@@ -19,16 +20,17 @@ char *get_full_csv_path(void) {
     const char *src_dir = dirname(file_path);
 
     // calculate required buffer size
-    size_t len =
-        strlen(src_dir) + 1 + strlen(CSV_PATH_TEMPLATE) + 1; // '/' + CSV + '\0'
+    // src_dir '/' + CSV_PATH_TEMPLATE + '\0'
+    size_t len = strlen(src_dir) + 1 + strlen(CSV_PATH_TEMPLATE) + 1;
     if (len > PATH_MAX) {
-        printf("Full path would exceed PATH_MAX.\nReturning NULL\n");
+        printf("Full path would exceed PATH_MAX: %d.\nReturning NULL\n",
+               PATH_MAX);
         return NULL;
     }
 
-    // allocate buffer
+    // allocate path buffer
     char *full_path = malloc(len);
-    if (!full_path) {
+    if (full_path == NULL) {
         printf("Path buffer allocation failed.\nReturning NULL\n");
         return NULL;
     }
@@ -39,9 +41,9 @@ char *get_full_csv_path(void) {
     return full_path;
 }
 
-/* Create Vector_csv from a csv file */
+/* Create a Vector_csv from a csv file */
 Vector_csv vector_from_file(const char *path, const char delimiter) {
-    // open CSV file
+    // open a CSV file
     FILE *fptr;
     fptr = fopen(path, "r");
 
@@ -66,7 +68,7 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
         return vector_csv;
     }
 
-    // read values from a csv file
+    // read values from a CSV file
     char chars_to_float[CHARS_TO_FLOAT_SIZE] = {0};
     char current_char = 0;
     size_t char_counter = 0;
@@ -81,7 +83,7 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
             return vector_csv;
         }
 
-        // if value is not delimiter
+        // if value is not a delimiter
         if (current_char != delimiter) {
             // write value to a buffer
             chars_to_float[char_counter] = current_char;
@@ -100,7 +102,7 @@ Vector_csv vector_from_file(const char *path, const char delimiter) {
             }
 
         } else {
-            // convert chars to float and save
+            // convert chars to a float and save
             val_buffer[val_counter] = strtof(chars_to_float, NULL);
 
             // clean buffer

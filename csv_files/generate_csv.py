@@ -26,9 +26,9 @@ if __name__ == "__main__":
     # Mixed signal
     s = s1 + s2 + s3
 
-    # Get file path
+    # Get a file path
     file_path = get_file_path()
 
-    # Save to csv file
+    # Save to a CSV file
     np.savetxt(file_path, s, fmt="%2.10f")
     print(f"Signal saved as {file_path}")

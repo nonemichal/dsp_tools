@@ -10,10 +10,10 @@ def plot_signal(s: np.ndarray):
 
 
 if __name__ == "__main__":
-    # Get file path
+    # Get a file path
     file_path = get_file_path()
 
-    # Load csv file
+    # Load a CSV file
     s = np.loadtxt(file_path)
 
     # Plot signal
