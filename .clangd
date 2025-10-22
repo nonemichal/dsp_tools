@@ -1,5 +1,5 @@
 CompileFlags:
-  CompilationDatabase: "cmake"
+  CompilationDatabase: build
 
 Diagnostics:
   ClangTidy:
