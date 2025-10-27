@@ -11,27 +11,32 @@ set(CMAKE_C_EXTENSIONS ON)
 # Enable compiler warnings
 add_compile_options(-Wall -Wextra -Wpedantic -Wconversion -Wshadow)
 
-# List of library source files
+# Library sources
 set(LIB_SOURCES src/vector_csv.c)
-
-# List of test source files
-set(TEST_SOURCES tests/print_and_save.c)
 
 # Build shared library
 add_library(vector_csv SHARED ${LIB_SOURCES})
 target_include_directories(vector_csv PRIVATE ${CMAKE_SOURCE_DIR}/include)
-
-# Build test executable
-add_executable(print_and_save ${TEST_SOURCES})
-target_include_directories(print_and_save PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(print_and_save PRIVATE vector_csv)
-
-# Generate compile_commands.json
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# Output directories
 set_target_properties(
   vector_csv PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dsp_tools
                         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dsp_tools)
-set_target_properties(print_and_save PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-                                                ${CMAKE_BINARY_DIR}/tests)
+
+# Only build tests in Debug mode
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+  # Get all test source files in tests/ folder
+  file(GLOB TEST_SOURCES "tests/*.c")
+
+  foreach(test_file ${TEST_SOURCES})
+    # Get filename without path and extension
+    get_filename_component(test_name ${test_file} NAME_WE)
+
+    # Create an executable for each test file
+    add_executable(${test_name} ${test_file})
+    target_include_directories(${test_name} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+    target_link_libraries(${test_name} PRIVATE vector_csv)
+
+    # Output directory for tests
+    set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+                                                  ${CMAKE_BINARY_DIR}/tests)
+  endforeach()
+endif()
