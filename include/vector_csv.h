@@ -2,6 +2,7 @@
 #define CSV_PARSER_H_
 
 #include <stddef.h>
+#include <stdio.h>
 
 #define DATA_BUFFER_SIZE 10000L // max size of a value buffer
 #define CHARS_TO_FLOAT_SIZE 64U // max size of chars to store one float
@@ -14,11 +15,16 @@
 /* enum defining whether the CSV file should be read or written */
 typedef enum { CSV_MODE_READ, CSV_MODE_WRITE } CsvMode;
 
-/* struct to store numbers from a CSV file */
+/* struct to store data and size of it */
 typedef struct {
-    float *data_buffer; // pointer to array of floats
-    size_t size;        // number of floats currently stored
-    size_t capacity;    // total capacity of the data_buffer
+    float *data; // pointer to an array of floats
+    size_t size; // number of floats currently stored
+} Data_and_size;
+
+/* struct to store data from a CSV file */
+typedef struct {
+    Data_and_size data_and_size;
+    size_t capacity; // total capacity of the data_buffer
 } Vector_csv;
 
 char *get_full_csv_path(CsvMode csv_mode);
