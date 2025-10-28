@@ -9,9 +9,9 @@ if __name__ == "__main__":
     x = np.linspace(start, end, n)
 
     # Frequencies
-    f1 = 2
-    f2 = 6
-    f3 = 10
+    f1 = 80
+    f2 = 240
+    f3 = 400
 
     # Amplitudes
     a1 = 5
