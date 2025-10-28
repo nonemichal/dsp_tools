@@ -87,7 +87,7 @@ static char *get_csv_path(CsvMode csv_mode) {
 }
 
 /* Create a Vector_csv from the CSV file */
-Vector_csv vector_from_file(const char *path, char delimiter) {
+Vector_csv vector_csv_from_file(const char *path, char delimiter) {
     // open the CSV file in reading mode
     FILE *fptr = fopen(path, "r");
 
@@ -161,7 +161,7 @@ static Data_and_size get_data_from_file(FILE *fptr, char delimiter) {
 
             // check char counter
             if (char_counter >= CHARS_TO_FLOAT_SIZE) {
-                printf("Size of char buffer cannot be geater than: "
+                printf("Size of char buffer cannot be greater than: "
                        "%u.\nReturning an empty structure\n\n",
                        CHARS_TO_FLOAT_SIZE);
                 free(data);
@@ -193,8 +193,8 @@ static Data_and_size get_data_from_file(FILE *fptr, char delimiter) {
 }
 
 /* Create a CSV file from a Vector_csv */
-void vector_to_file(const Vector_csv *vector_csv, const char *path,
-                    char delimiter) {
+void vector_csv_to_file(const Vector_csv *vector_csv, const char *path,
+                        char delimiter) {
     // Open a CSV file in writing mode
     FILE *fptr;
     fptr = fopen(path, "w");
@@ -239,7 +239,7 @@ void vector_to_file(const Vector_csv *vector_csv, const char *path,
 }
 
 /* Print content of Vector_csv */
-void print_vector(const Vector_csv *vector_csv) {
+void print_vector_csv(const Vector_csv *vector_csv) {
     // get data, size and capacity
     Data_and_size data_and_size = vector_csv->data_and_size;
     const float *data = data_and_size.data;

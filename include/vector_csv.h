@@ -1,5 +1,5 @@
-#ifndef CSV_PARSER_H_
-#define CSV_PARSER_H_
+#ifndef VECTOR_CSV_H_
+#define VECTOR_CSV_H_
 
 #include <stddef.h>
 #include <stdio.h>
@@ -24,13 +24,13 @@ typedef struct {
 /* struct to store data from a CSV file */
 typedef struct {
     Data_and_size data_and_size;
-    size_t capacity; // total capacity of the data_buffer
+    size_t capacity; // total capacity of the data buffer
 } Vector_csv;
 
 char *get_full_csv_path(CsvMode csv_mode);
-Vector_csv vector_from_file(const char *path, char delimiter);
-void vector_to_file(const Vector_csv *vector_csv, const char *path,
-                    char delimiter);
-void print_vector(const Vector_csv *vector_csv);
+Vector_csv vector_csv_from_file(const char *path, char delimiter);
+void vector_csv_to_file(const Vector_csv *vector_csv, const char *path,
+                        char delimiter);
+void print_vector_csv(const Vector_csv *vector_csv);
 
-#endif // CSV_PARSER_H_
+#endif // VECTOR_CSV_H_
