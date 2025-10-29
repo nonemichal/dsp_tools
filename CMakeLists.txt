@@ -25,7 +25,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Only build tests in Debug mode
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
   # Get all test source files recursively in tests/ folder
-  file(GLOB_RECURSE TEST_SOURCES "${CMAKE_SOURCE_DIR}/tests/*.c")
+  file(GLOB_RECURSE TEST_SOURCES "${CMAKE_SOURCE_DIR}/examples/*.c")
 
   foreach(test_file ${TEST_SOURCES})
     # Get filename without path and extension
