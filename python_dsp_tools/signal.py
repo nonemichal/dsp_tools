@@ -4,7 +4,7 @@ import numpy as np
 class Signal:
     """Universal signal class that stores x and data."""
 
-    def __init__(self, x: np.ndarray, data: np.ndarray):
+    def __init__(self, x: np.ndarray, data: np.ndarray) -> None:
         self.x: np.ndarray = np.asarray(x)
         self.data: np.ndarray = np.asarray(data)
 
@@ -19,7 +19,7 @@ class Signal:
         duration: float,
         sample_rate: float,
         phase: float = 0.0,
-    ):
+    ) -> "Signal":
         """Generate a sine wave signal."""
         x = np.linspace(0, duration, int(duration * sample_rate), endpoint=False)
         data = amplitude * np.sin(2 * np.pi * frequency * x + phase)
@@ -28,14 +28,14 @@ class Signal:
     @classmethod
     def square(
         cls, amplitude: float, frequency: float, duration: float, sample_rate: float
-    ):
+    ) -> "Signal":
         """Generate a square wave signal."""
         x = np.linspace(0, duration, int(duration * sample_rate), endpoint=False)
         data = amplitude * np.sign(np.sin(2 * np.pi * frequency * x))
         return cls(x, data)
 
     @classmethod
-    def noise(cls, amplitude: float, duration: float, sample_rate: float):
+    def noise(cls, amplitude: float, duration: float, sample_rate: float) -> "Signal":
         """Generate a random noise signal."""
         x = np.linspace(0, duration, int(duration * sample_rate), endpoint=False)
         data = amplitude * np.random.randn(len(x))
@@ -55,4 +55,3 @@ class Signal:
     def copy(self) -> "Signal":
         """Return a deep copy of the signal."""
         return Signal(np.copy(self.x), np.copy(self.data))
-

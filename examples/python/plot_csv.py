@@ -13,6 +13,9 @@ if str(project_root) not in sys.path:
 from python_dsp_tools import CsvFile, CsvFileType, Signal
 
 if __name__ == "__main__":
+    # Common values
+    delimiter = "\n"
+
     # Create a CSV file
-    csv_file = CsvFile(CsvFileType.OUTPUT, None, "\n")
+    csv_file = CsvFile.from_output(delimiter)
     csv_file.plot()

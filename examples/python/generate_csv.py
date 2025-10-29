@@ -16,6 +16,7 @@ if __name__ == "__main__":
     # Common values
     duration = 1  # 1 second
     sample_rate = 1000  # 1000 samples per second
+    delimiter = "\n"
 
     Amps = [1, 2, 3]  # Amplitudes
     Freqs = [100, 250, 450]  # Frequencies
@@ -27,8 +28,10 @@ if __name__ == "__main__":
 
     # Sum signals
     s = s1 + s2 + s3
+    print("Signals mixed")
 
     # Create a CSV file
-    csv_file = CsvFile(CsvFileType.SIGNAL, s.data, "\n")
+    csv_file = CsvFile.from_data(s.data, delimiter)
     csv_file.plot()
     csv_file.save()
+    print(f"File saved as {csv_file.full_path}")

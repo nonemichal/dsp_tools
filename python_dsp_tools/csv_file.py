@@ -1,8 +1,8 @@
+from dataclasses import dataclass
 import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 from enum import StrEnum
-from typing import Any
 
 
 class CsvFileType(StrEnum):
@@ -11,50 +11,47 @@ class CsvFileType(StrEnum):
     SIGNAL = "signal.csv"
     OUTPUT = "out.csv"
 
-
-class CsvFile:
-    """Represents a CSV file with data and delimiter."""
-
-    CSV_FILES_DIR: str = "csv_files"
-
-    def __init__(
-        self, file_type: CsvFileType, data: np.ndarray | None, delimiter: str
-    ) -> None:
-        self.file_type: CsvFileType = file_type
-
-        if not delimiter:
-            raise ValueError("delimiter cannot be empty.")
-
-        self.file_path: Path = self._get_file_path()
-
-        if data is None or len(data) == 0:
-            if file_type == CsvFileType.OUTPUT:
-                self.data = np.loadtxt(self.file_path)
-            else:
-                raise ValueError("data cannot be None or empty.")
-
-        self.data: np.ndarray = data
-        self.delimiter: str = delimiter
-
-        self._dict: dict[str, Any] = dict(vars(self))
-
-        print("CsvFile created")
-
-    def _get_file_path(self) -> Path:
-        # Create a CSV file path based on the enum value
-        base_dir = Path(__file__).parent.parent.parent.resolve()
-        csv_path = base_dir / self.CSV_FILES_DIR
+    def get_full_path(self, csv_files_dir: str) -> Path:
+        # Create a CSV file path based on the enum file type
+        base_dir = Path(__file__).parent.parent.resolve()
+        csv_path = base_dir / csv_files_dir
         csv_path.mkdir(parents=True, exist_ok=True)  # Create dir if does not exists
-        file_name = Path(self.file_type.value)
+        file_name = self.value
         file_path = csv_path / file_name
         return file_path
 
+
+@dataclass
+class CsvFile:
+    """Represents a CSV file with data and delimiter."""
+
+    file_type: CsvFileType
+    full_path: Path
+    data: np.ndarray
+    delimiter: str
+
+    CSV_FILES_DIR: str = "csv_files"
+
+    @classmethod
+    def from_data(cls, data: np.ndarray, delimiter: str) -> "CsvFile":
+        """Create a CSV object from data"""
+        file_type = CsvFileType.SIGNAL
+        full_path = file_type.get_full_path(cls.CSV_FILES_DIR)
+        return cls(file_type, full_path, data, delimiter)
+
+    @classmethod
+    def from_output(cls, delimiter: str) -> "CsvFile":
+        """Create a CSV object from output file"""
+        file_type = CsvFileType.OUTPUT
+        full_path = file_type.get_full_path(cls.CSV_FILES_DIR)
+        data = np.loadtxt(full_path)
+        return cls(file_type, full_path, data, delimiter)
+
     def save(self) -> None:
         """Save a CSV file."""
-        np.savetxt(self.file_path, self.data, fmt="%2.10f")
-        print(f"Signal saved as {self.file_path}.")
+        np.savetxt(self.full_path, self.data, fmt="%2.10f")
 
-    def plot(self):
+    def plot(self) -> None:
         """Plot a CSV file"""
         plt.plot(self.data)
         plt.show()
