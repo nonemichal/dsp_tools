@@ -1,6 +1,7 @@
 build/
 debug/
 csv_files/
+.ipynb_checkpoints/
 .cache
 .lldb-target
 *.csv

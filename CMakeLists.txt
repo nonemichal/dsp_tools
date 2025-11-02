@@ -38,6 +38,6 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
     # Output directory for tests
     set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
-                                                  ${CMAKE_BINARY_DIR}/tests)
+                                                  ${CMAKE_BINARY_DIR}/examples)
   endforeach()
 endif()
